@@ -1,0 +1,17 @@
+services:
+  postgres:
+    container_name: postgres-container
+    image: postgres:12.20-alpine3.20
+    hostname: localhost
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: mintesnot
+      POSTGRES_PASSWORD: mintesnot
+      POSTGRES_DB: note
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+volumes:
+  postgres-data:
