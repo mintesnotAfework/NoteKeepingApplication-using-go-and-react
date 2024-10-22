@@ -12,6 +12,13 @@ services:
     volumes:
       - postgres-data:/var/lib/postgresql/data
     restart: unless-stopped
+  react:
+    container_name: react-container
+    build: 
+      context: ./note-application
+    restart: always
+    ports:
+      - "3000:3000"
 
 volumes:
   postgres-data:
