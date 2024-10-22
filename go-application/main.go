@@ -24,11 +24,10 @@ func main() {
 	routes.NoteRouteRegisteration(router)
 
 	port := os.Getenv("PORT")
-	hostname := os.Getenv("HOSTNAME")
 
-	fmt.Printf("Starting port at %s:%s", hostname, port)
+	fmt.Printf("Starting port at :%s", port)
 	fmt.Println("")
 
 	http.Handle("/", r)
-	log.Fatal(http.ListenAndServe(hostname+":"+port, r))
+	log.Fatal(http.ListenAndServe(":"+port, r))
 }

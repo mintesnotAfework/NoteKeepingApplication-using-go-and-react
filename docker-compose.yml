@@ -1,6 +1,6 @@
 services:
   postgres:
-    container_name: postgres-container
+    container_name: postgres_container
     image: postgres:12.20-alpine3.20
     hostname: localhost
     ports:
@@ -12,13 +12,24 @@ services:
     volumes:
       - postgres-data:/var/lib/postgresql/data
     restart: unless-stopped
+  go:
+    container_name: go_container
+    build: 
+      context: ./go-application
+    restart: always
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
   react:
-    container_name: react-container
+    container_name: react_container
     build: 
       context: ./note-application
     restart: always
     ports:
       - "3000:3000"
+    depends_on:
+      - go
 
 volumes:
   postgres-data:
