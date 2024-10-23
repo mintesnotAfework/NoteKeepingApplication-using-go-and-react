@@ -12,15 +12,15 @@ services:
     volumes:
       - postgres-data:/var/lib/postgresql/data
     restart: unless-stopped
-  go:
-    container_name: go_container
-    build: 
-      context: ./go-application
-    restart: always
-    ports:
-      - "8080:8080"
-    depends_on:
-      - postgres
+  # go:
+  #   container_name: go_container
+  #   build: 
+  #     context: ./go-application
+  #   restart: always
+  #   ports:
+  #     - "8080:8080"
+  #   depends_on:
+  #     - postgres
 
 volumes:
   postgres-data:

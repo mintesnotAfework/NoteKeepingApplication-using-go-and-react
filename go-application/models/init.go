@@ -12,4 +12,5 @@ func init() {
 	db = config.GetDB()
 	db.AutoMigrate(&User{})
 	db.AutoMigrate(&Note{})
+	db.AutoMigrate(&Token{})
 }

@@ -10,19 +10,7 @@ import (
 	"github.com/mintesnotAfework/NoteKeepingApplication-using-go-and-react/utils"
 )
 
-func CreateUser(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-
-	user := &models.User{}
-	utils.PareseBody(r, user)
-	u := user.CreateUser()
-	res, _ := json.Marshal(u)
-
-	w.WriteHeader(http.StatusCreated)
-	w.Write(res)
-}
-
-func GetUserById(w http.ResponseWriter, r *http.Request) {
+func GetUserById(w http.ResponseWriter, r *http.Request, u *models.User) {
 	w.Header().Set("Content-Type", "application/json")
 
 	params := mux.Vars(r)
@@ -43,7 +31,7 @@ func GetUserById(w http.ResponseWriter, r *http.Request) {
 	w.Write(res)
 }
 
-func GetAllUser(w http.ResponseWriter, r *http.Request) {
+func GetAllUser(w http.ResponseWriter, r *http.Request, u *models.User) {
 	w.Header().Set("Content-Type", "application/json")
 
 	users := models.GetAllUsers()
@@ -57,7 +45,7 @@ func GetAllUser(w http.ResponseWriter, r *http.Request) {
 	w.Write(res)
 }
 
-func UpdateUserById(w http.ResponseWriter, r *http.Request) {
+func UpdateUserById(w http.ResponseWriter, r *http.Request, u *models.User) {
 	w.Header().Set("Content-Type", "application/json")
 
 	params := mux.Vars(r)
@@ -69,12 +57,12 @@ func UpdateUserById(w http.ResponseWriter, r *http.Request) {
 
 	user := &models.User{}
 	utils.PareseBody(r, user)
-	u, err := user.UpdateUserById(int64(id))
+	result, err := user.UpdateUserById(int64(id))
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	res, err := json.Marshal(u)
+	res, err := json.Marshal(result)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		return
@@ -84,7 +72,7 @@ func UpdateUserById(w http.ResponseWriter, r *http.Request) {
 	w.Write(res)
 }
 
-func DeleteUserById(w http.ResponseWriter, r *http.Request) {
+func DeleteUserById(w http.ResponseWriter, r *http.Request, u *models.User) {
 	w.Header().Set("Content-Type", "application/json")
 
 	params := mux.Vars(r)

@@ -38,6 +38,13 @@ func GetUserById(id int64) *User {
 
 }
 
+func GetUserByEmail(email string) *User {
+	var user User
+	db.Where("email=?", email).Find(&user)
+	return &user
+
+}
+
 func (u *User) UpdateUserById(id int64) (*User, error) {
 	var user User
 	if checkUserExists(id) {

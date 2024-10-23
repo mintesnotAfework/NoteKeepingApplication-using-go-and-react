@@ -10,7 +10,7 @@ import (
 	"github.com/mintesnotAfework/NoteKeepingApplication-using-go-and-react/utils"
 )
 
-func CreateNote(w http.ResponseWriter, r *http.Request) {
+func CreateNote(w http.ResponseWriter, r *http.Request, u *models.User) {
 	w.Header().Set("Content-Type", "application/json")
 
 	note := &models.Note{}
@@ -31,7 +31,7 @@ func CreateNote(w http.ResponseWriter, r *http.Request) {
 	w.Write(res)
 }
 
-func GetNoteByUserId(w http.ResponseWriter, r *http.Request) {
+func GetNoteByUserId(w http.ResponseWriter, r *http.Request, u *models.User) {
 	w.Header().Set("Content-Type", "application/json")
 
 	params := mux.Vars(r)
@@ -52,7 +52,7 @@ func GetNoteByUserId(w http.ResponseWriter, r *http.Request) {
 	w.Write(res)
 }
 
-func GetNoteById(w http.ResponseWriter, r *http.Request) {
+func GetNoteById(w http.ResponseWriter, r *http.Request, u *models.User) {
 	w.Header().Set("Content-Type", "application/json")
 
 	params := mux.Vars(r)
@@ -73,7 +73,7 @@ func GetNoteById(w http.ResponseWriter, r *http.Request) {
 	w.Write(res)
 }
 
-func GetAllNote(w http.ResponseWriter, r *http.Request) {
+func GetAllNote(w http.ResponseWriter, r *http.Request, u *models.User) {
 	w.Header().Set("Content-Type", "application/json")
 
 	notes := models.GetAllNote()
@@ -87,7 +87,7 @@ func GetAllNote(w http.ResponseWriter, r *http.Request) {
 	w.Write(res)
 }
 
-func UpdateNoteById(w http.ResponseWriter, r *http.Request) {
+func UpdateNoteById(w http.ResponseWriter, r *http.Request, u *models.User) {
 	w.Header().Set("Content-Type", "application/json")
 
 	params := mux.Vars(r)
@@ -114,7 +114,7 @@ func UpdateNoteById(w http.ResponseWriter, r *http.Request) {
 	w.Write(res)
 }
 
-func DeleteNoteById(w http.ResponseWriter, r *http.Request) {
+func DeleteNoteById(w http.ResponseWriter, r *http.Request, u *models.User) {
 	w.Header().Set("Content-Type", "application/json")
 
 	params := mux.Vars(r)

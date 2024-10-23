@@ -1,16 +1,13 @@
 package models
 
 import (
-	"errors"
-
 	"gorm.io/gorm"
 )
 
 type Token struct {
 	gorm.Model
-	value   string `gorm:"unique not null;size::64" validate:"required,min=4,max=64" json:"value"`
-	refresh string `gorm:"unique not null;size::64" validate:"required,min=4,max=64" json:"refresh"`
-	userId  uint64 `gorm:"not null;size::64" validate:"required,min=4,max=64" json:"user_id"`
+	Refresh string `gorm:"unique not null;size::64" validate:"required,min=4,max=64"`
+	UserId  uint   `gorm:"not null;size::64" validate:"required,min=4,max=64"`
 }
 
 func (t *Token) CreateToken() *Token {
@@ -18,17 +15,13 @@ func (t *Token) CreateToken() *Token {
 	return t
 }
 
-func GetUserId(value string) (uint64, error) {
-	if checkTokenExists(value) {
-		var token Token
-		db.Model(&Token{}).Where("value = ?", value).First(&token)
-		return token.userId, nil
-	} else {
-		return 0, errors.New("token not found")
-	}
+func GetRefreshTokenByUserId(id uint) *Token {
+	var token Token
+	db.Where("user_id=?", id).Find(&token)
+	return &token
 }
 
-func DeleteTokenByUserId(user_id uint64) {
+func DeleteRefreshTokenByUserId(user_id uint64) {
 	db.Where("user_id=?", user_id).Delete(&Token{})
 }
 
@@ -36,10 +29,21 @@ func DeleteTokenById(id uint64) {
 	db.Where("ID=?", id).Delete(&Token{})
 }
 
-func checkTokenExists(value string) bool {
+func checkTokenExists(refresh string) bool {
 	var count int64
 
-	err := db.Model(&Token{}).Where("value = ?", value).Count(&count).Error
+	err := db.Model(&Token{}).Where("refresh = ?", refresh).Count(&count).Error
+	if err != nil {
+		return false
+	}
+
+	return count != 1
+}
+
+func checkUserRefreshTokenExists(id uint) bool {
+	var count int64
+
+	err := db.Model(&Token{}).Where("user_id = ?", id).Count(&count).Error
 	if err != nil {
 		return false
 	}
