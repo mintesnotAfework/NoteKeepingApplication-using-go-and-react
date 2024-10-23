@@ -8,8 +8,9 @@ import (
 
 type Note struct {
 	gorm.Model
-	Content string `gorm:"not null;size::64" validate:"required,min=4,max=64" json:"content"`
-	UserId  int64  `gorm:"not null;size::64" validate:"required,min=4,max=64" json:"user_id"`
+	Name    string `gorm:"not null;size:64" validate:"required,min=4,max=64" json:"name"`
+	Content string `gorm:"not null;" validate:"required" json:"content"`
+	UserId  int64  `gorm:"not null;" validate:"required" json:"user_id"`
 }
 
 func (n *Note) CreateNote() (*Note, error) {
