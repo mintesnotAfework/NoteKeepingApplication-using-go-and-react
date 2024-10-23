@@ -19,6 +19,7 @@ func main() {
 
 	r := mux.NewRouter()
 	router := r.PathPrefix("/api").Subrouter()
+
 	routes.AuthRouteRegisteration(router)
 	routes.UserRouteRegisteration(router)
 	routes.NoteRouteRegisteration(router)

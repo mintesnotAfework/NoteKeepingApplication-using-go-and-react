@@ -19,7 +19,7 @@ func Register(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-
+	user.UserType = "USER"
 	u := user.CreateUser()
 	if u.ID == 0 {
 		w.WriteHeader(http.StatusBadRequest)
@@ -39,6 +39,32 @@ func Register(w http.ResponseWriter, r *http.Request) {
 	}
 
 	res, _ := json.Marshal(dto.Combiner(&refresh_token, &token))
+	w.WriteHeader(http.StatusCreated)
+	w.Write(res)
+}
+
+func AdminRegister(w http.ResponseWriter, r *http.Request, adminUser *models.User) {
+	w.Header().Set("Content-Type", "application/json")
+
+	user := &models.User{}
+	utils.PareseBody(r, user)
+	if !helpers.ValidateUser(user) {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+	u := user.CreateUser()
+	if u.ID == 0 {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	hashedPassword, err := helpers.HashPassword(user.Password)
+	if hashedPassword == "" || err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	u.Password = "XXX-XXX-XXX"
+	res, _ := json.Marshal(u)
 	w.WriteHeader(http.StatusCreated)
 	w.Write(res)
 }

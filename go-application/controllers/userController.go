@@ -20,6 +20,11 @@ func GetUserById(w http.ResponseWriter, r *http.Request, u *models.User) {
 		return
 	}
 
+	if u.UserType != "ADMIN" && int64(u.ID) != int64(id) {
+		w.WriteHeader(http.StatusForbidden)
+		return
+	}
+
 	user := models.GetUserById(int64(id))
 	res, err := json.Marshal(user)
 	if err != nil {
@@ -33,6 +38,10 @@ func GetUserById(w http.ResponseWriter, r *http.Request, u *models.User) {
 
 func GetAllUser(w http.ResponseWriter, r *http.Request, u *models.User) {
 	w.Header().Set("Content-Type", "application/json")
+	if u.UserType != "ADMIN" {
+		w.WriteHeader(http.StatusForbidden)
+		return
+	}
 
 	users := models.GetAllUsers()
 	res, err := json.Marshal(users)
@@ -52,6 +61,11 @@ func UpdateUserById(w http.ResponseWriter, r *http.Request, u *models.User) {
 	id, err := strconv.Atoi(params["id"])
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	if u.UserType != "ADMIN" && int64(u.ID) != int64(id) {
+		w.WriteHeader(http.StatusForbidden)
 		return
 	}
 
@@ -79,6 +93,11 @@ func DeleteUserById(w http.ResponseWriter, r *http.Request, u *models.User) {
 	id, err := strconv.Atoi(params["id"])
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	if u.UserType != "ADMIN" && int64(u.ID) != int64(id) {
+		w.WriteHeader(http.StatusForbidden)
 		return
 	}
 
